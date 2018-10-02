@@ -1,0 +1,13 @@
+[Unit]
+Description=IR Exec
+After=lirc.service
+Wants=lirc.service
+
+[Service]
+EnvironmentFile=/etc/conf.d/irexec
+ExecStart=/usr/bin/irexec $IREXEC_OPTS
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+[Unit]
+Description=Myth Frontend
+Requires=display.service
+Requires=systemd-networkd-wait-online.service
+Requires=lirc.service
+Wants=xscreensaver.service
+After=display.service
+After=lirc.service
+After=xscreensaver.service
+After=systemd-networkd-wait-online.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/xrandr --output $MYTH_OUT --mode $MYTH_MODE --rate $MYTH_RATE
+ExecStart=/usr/bin/mythfrontend
+EnvironmentFile=/etc/conf.d/tv
+Restart=on-failure
+RestartSec=2s
+User=mythtv
+Group=mythtv
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

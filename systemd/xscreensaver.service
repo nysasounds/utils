@@ -1,0 +1,21 @@
+[Unit]
+Description=XScreenSaver
+Requires=tv.service
+Wants=xscreensaver-monitor.service
+After=tv.service
+Before=xscreensaver-monitor.service
+
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/xscreensaver -nosplash -no-capture-stderr -verbose
+EnvironmentFile=/etc/conf.d/tv
+Restart=on-failure
+RestartSec=2s
+User=mythtv
+Group=mythtv
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

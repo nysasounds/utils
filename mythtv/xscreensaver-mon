@@ -1,0 +1,229 @@
+#!/usr/bin/python3
+
+
+import sys, os, re, time
+import argparse
+import logging
+from logging.handlers import WatchedFileHandler
+import subprocess
+import signal
+from datetime import datetime
+
+
+# Handle SIGTERM #
+def signal_term_handler(signal, frame):
+  log.info('got SIGTERM')
+  sys.exit(0)
+
+
+signal.signal(signal.SIGTERM, signal_term_handler)
+
+
+# Args #
+parser = argparse.ArgumentParser(description='Monitor XScreensaver and change settings')
+parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
+parser.add_argument('-f', '--file', type=str, metavar='some_log_file', help='Log to a file instead of standard out')
+parser.add_argument('-a', '--always', action='store_true', help='Always on')
+
+args = parser.parse_args()
+
+
+# Logging #
+log = logging.getLogger('xscreensaver-mon')
+
+if args.debug:
+  log.setLevel(logging.DEBUG)
+else:
+  log.setLevel(logging.INFO)
+
+if args.file:
+  #handler = logging.FileHandler(args.file)
+  handler = WatchedFileHandler(args.file)
+else:
+  handler = logging.StreamHandler(sys.stdout)
+
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+
+# add the handlers to the logger
+log.addHandler(handler)
+
+
+# Environment setup #
+env = os.environ.copy()
+env['DISPLAY'] = ':0'
+
+
+# Config file presets #
+xscreesaver_config       = env['HOME'] + '/' + '.xscreensaver'
+xscreesaver_config_blank = xscreesaver_config + '.blank'
+xscreesaver_config_view  = xscreesaver_config + '.view'
+
+
+# Read commnd output #
+def read_command(program):
+
+  try:
+
+    output = subprocess.check_output(program, env=env, stderr=subprocess.STDOUT, shell=False, timeout=10)
+
+  except subprocess.CalledProcessError as grepexc:
+
+    log.warn('Unalbe to read command: exit[{}] {}'.format(grepexc.returncode, grepexc.output.decode("utf-8").strip()))
+    return False
+
+  line = output.decode("utf-8").strip()
+
+  if len(line) > 0 :
+    return line
+
+
+# Get xscreensaver status #
+def get_status():
+
+  raw_status = read_command(['/usr/bin/xscreensaver-command','-time'])
+
+  if not raw_status:
+
+    return False
+
+  #status = re.search('^XScreenSaver 5.36: screen (.*blanked) since (.*)( \(hack #([0-9]*)\))?$', raw_status)
+  #status = re.search('^XScreenSaver 5.36: screen (.*blanked) since (\w+ \w+ \w+ \d+:\d+:\d+ \d+)( \(hack #([0-9]*)\))?$', raw_status)
+  status = re.search('^XScreenSaver [0-9]+.[0-9]+: screen (.*blanked) since (\w+\s+\w+\s+\w+\s+\d+:\d+:\d+\s+\d+)( \(hack #([0-9]*)\))?$', raw_status)
+
+
+  if len(status.groups()) == 4:
+
+    event_time = datetime.strptime(status.groups()[1], '%a %b %d %H:%M:%S %Y')
+    timer = datetime.now() - event_time
+    return [status.groups()[0], timer.seconds, status.groups()[3]]
+
+  else:
+
+    return False
+
+
+# Configure xscreensaver from presets #
+def screensaver_conf(config):
+
+  try:
+
+    log.debug('Preset[{}] requested'.format(config))
+
+
+    preset = None
+
+    if config == 'blank':
+
+      preset = xscreesaver_config_blank
+
+    if config == 'pretty':
+
+      preset = xscreesaver_config_view
+     
+    if preset is None:
+
+      log.warn('No matching preset[{}]'.format(config))
+      return False
+
+
+    if os.path.exists(xscreesaver_config):
+
+      if os.readlink(xscreesaver_config) == preset:
+
+        log.debug('Preset[{}] already configured'.format(config))
+        return True
+
+
+    log.info('Configuring preset[{}]'.format(config))
+    if os.path.exists(xscreesaver_config):
+
+      os.remove(xscreesaver_config)
+
+    os.symlink(preset, xscreesaver_config)
+    return True
+
+
+  except OSError as e:
+
+    log.error('Unable to configure screensaver from presets', exc_info=True)
+
+
+# This would watch for events - rather than regular polling #
+#
+#while True:
+#
+#  event = read_command(['/usr/bin/xscreensaver-command','-watch'])
+#
+#  print event
+#
+#  print get_status()
+
+
+def main():
+
+  # Start time #
+  starttime=time.time()
+
+  while True:
+
+    try:
+
+      # Get status #
+      status = get_status()
+
+      if status:
+
+        log.info('{} for {} seconds: last screen hack[{}]'.format(status[0], status[1], status[2]))
+
+
+        # If xscreensaver is active #
+        if status[0] == 'blanked':
+
+          # for over an hour #
+          if status[1] > 3600:
+
+            # Blank #
+            if args.always:
+              screensaver_conf('pretty')
+            else:
+              screensaver_conf('blank')
+
+          # for under an hour #
+          else:
+
+            # Pretty #
+            screensaver_conf('pretty')
+
+
+        # If xscreensaver is inactive #
+        if status[0] == 'non-blanked':
+
+          # Pretty #
+          screensaver_conf('pretty')
+
+
+      else:
+
+        log.warn('No status')
+
+
+    except (SystemExit, KeyboardInterrupt) as e:
+
+      log.info('Exiting at request...')
+      sys.exit(0)
+      #raise
+
+    except Exception as e:
+
+      log.error('Unknow state - will set to blank', exc_info=True)
+      screensaver_conf('blank')
+
+
+    # Sleep #
+    time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+
+
+# Do stuff #
+if __name__ == '__main__':
+  main()

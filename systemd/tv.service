@@ -1,0 +1,16 @@
+[Unit]
+Description=TV Services
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/Xtv $DISPLAY -layout $XLAYOUT -nolisten tcp
+EnvironmentFile=/etc/conf.d/tv
+Restart=on-failure
+RestartSec=2s
+User=mythtv
+Group=mythtv
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=XScreenSaver Monitor
+Requires=xscreensaver.service
+After=xscreensaver.service
+
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/conf.d/tv
+#ExecStart=/usr/local/bin/xscreensaver-mon --file /var/log/mythtv/xscreensaver-mon.log ${EXTRA_ARGS}
+ExecStart=/usr/local/bin/xscreensaver-mon --file /var/log/mythtv/xscreensaver-mon.log --debug
+Restart=on-failure
+RestartSec=2s
+User=mythtv
+Group=mythtv
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

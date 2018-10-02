@@ -1,0 +1,32 @@
+#!/sbin/runscript
+# Copyright 1999-2013 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# Script to setup Myth
+
+description="Myth set-up daemon"
+
+export DISPLAY=:0
+export MYTHCONFDIR=/home/mythtv/.mythtv
+
+depend() {
+	need localmount tv
+	after bootmisc autofs
+	use acpid tv
+}
+
+start() {
+	ebegin "Starting Myth Set-Up Services"
+	start-stop-daemon --start --quiet --make-pidfile --pidfile ${MYTHPID} --background --user mythtv \
+		--exec /usr/bin/mythtv-setup -- $MYTHSETUP_OPTS
+	eend $?
+	ebegin "Setting Up nVidia Card"
+	/opt/bin/nvidia-settings --load-config-only --config=${NVCONF}
+	eend $?
+}
+
+stop () {
+	ebegin "Stopping Myth Set-Up Services"
+	start-stop-daemon --stop --quiet --pidfile=${MYTHPID}
+	eend $?
+}
+

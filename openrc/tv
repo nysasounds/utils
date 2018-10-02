@@ -1,0 +1,33 @@
+#!/sbin/runscript
+# Copyright 1999-2013 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# Script to start and stop the TV services
+
+description="TV daemon"
+
+depend() {
+	need localmount
+	after bootmisc autofs
+	use acpid hald
+	provide tv
+}
+
+start() {
+	ebegin "Starting TV Services"
+	start-stop-daemon --start --quiet --user mythtv \
+		--make-pidfile --pidfile /var/run/tv.pid --background \
+		--exec /usr/local/bin/Xtv -- ${XSCREEN} -layout ${XLAYOUT} -ac -novtswitch -nolisten tcp
+	eend $?
+}
+
+stop () {
+	ebegin "Stopping TV Services"
+	start-stop-daemon --stop --quiet --pidfile=/var/run/tv.pid
+	eend $?
+}
+
+status () {
+	ebegin "Checking TV Status"
+	kill -0 `cat /var/run/tv.pid` >/dev/null 2>&1
+	eend $?
+}

@@ -1,0 +1,35 @@
+#!/sbin/runscript
+# Copyright 1999-2013 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# Script to start and stop the Myth services
+
+description="Myth frontend daemon"
+
+depend() {
+	need localmount mythbackend tv
+	after bootmisc autofs lircd
+	use acpid lircd
+}
+
+start() {
+	ebegin "Starting Myth Services"
+	sleep 2
+	start-stop-daemon --start --quiet --make-pidfile --pidfile ${MYTHPID} --background --user mythtv \
+		--exec /usr/bin/mythfrontend
+	eend $?
+	ebegin "Setting Up nVidia Card"
+	/opt/bin/nvidia-settings --load-config-only --config=${NVCONF}
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping Myth Services"
+	start-stop-daemon --stop --quiet --pidfile=${MYTHPID}
+	eend $?
+}
+
+status() {
+	ebegin "Checking Myth Status"
+	kill -0 `cat ${MYTHPID}` >/dev/null 2>&1
+	eend $?
+}

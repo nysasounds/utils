@@ -1,0 +1,14 @@
+[Unit]
+Description=Linux Infrared Remote Control
+After=network.target
+
+[Service]
+RuntimeDirectory=lirc
+EnvironmentFile=/etc/conf.d/lircd
+ExecStartPre=/bin/bash -c "/bin/echo $RC0 > /sys/class/rc/rc0/protocols"
+ExecStart=/usr/sbin/lircd --nodaemon $LIRCD_OPTS
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target

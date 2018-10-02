@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SRVS="libvirtd iscsid mediatomb mpd nfsclient netmount logitechmediaserver"
+
+if [ "$1" == "add" -o "$1" == "del" ] ; then
+	for d in $SRVS ; do
+		rc-update $1 $d default
+	done
+else
+	echo "add/del ?"
+fi
+

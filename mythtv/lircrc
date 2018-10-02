@@ -1,0 +1,390 @@
+# MythTV native LIRC config file for
+# RC6_MCE IR device
+#
+# 2013 - nysasounds
+
+
+################## MythTV Control ######################
+### http://www.mythtv.org/wiki/index.php/Keybindings ###
+
+#       Remote Button
+##      MythTV function
+
+
+
+### keyless
+#
+# KEY_DVD
+# KEY_TUNER
+# KEY_DELETE
+# KEY_ENTER
+# KEY_SUBTITLE
+#
+
+
+# Restart Myth #
+begin
+prog = irexec
+button = KEY_SLEEP
+config = /home/mythtv/scripts/restart-frontend.sh
+end
+
+
+#       KEY_MEDIA
+##      Go to home page
+begin
+prog = mythtv
+button = KEY_MEDIA
+config = ALT+H
+end
+
+#       KEY_TV
+##      Go to Watch TV
+begin
+prog = mythtv
+button = KEY_TV
+config = ALT+T
+end
+
+#       KEY_VIDEO
+##      Go to MythVideo
+begin
+prog = mythtv
+button = KEY_VIDEO
+config = ALT+V
+end
+
+#       KEY_AUDIO
+##      Go to MythMusic
+begin
+prog = mythtv
+button = KEY_AUDIO
+config = ALT+M
+end
+
+#       KEY_CAMERA
+##      Go to MythGallery
+begin
+prog = mythtv
+button = KEY_CAMERA
+config = ALT+P
+end
+
+
+#       KEY_EPG
+##      display EPG
+begin
+prog = mythtv
+button = KEY_EPG
+config = s
+end
+
+
+#       KEY_PLAY
+##      Play
+begin
+prog = mythtv
+button = KEY_PLAY
+config = Space
+end
+
+#       KEY_PAUSE
+##      Pause
+begin
+prog = mythtv
+button = KEY_PAUSE
+config = P
+end
+
+#       KEY_STOP
+##      Stop
+begin
+prog = mythtv
+button = KEY_STOP
+config = Esc
+end
+
+#       KEY_RECORD
+##      Record
+begin
+prog = mythtv
+button = KEY_RECORD
+config = R
+end
+
+#       KEY_REWIND
+##      ReWind
+begin
+prog = mythtv
+button = KEY_REWIND
+config = Left
+end
+
+#       KEY_FASTFORWARD
+##      ForwardWind
+begin
+prog = mythtv
+button = KEY_FASTFORWARD
+config = Right
+end
+
+#       KEY_PREVIOUS
+##      Skip Back
+begin
+prog = mythtv
+button = KEY_PREVIOUS
+config = PgUp
+end
+
+#       KEY_NEXT
+##      Skip Forward
+begin
+prog = mythtv
+button = KEY_NEXT
+config = PgDown
+end
+
+
+#       KEY_UP
+##      Up
+begin
+prog = mythtv
+button = KEY_UP
+config = Up
+repeat = 2
+end
+
+#       KEY_DOWN
+##      Down
+begin
+prog = mythtv
+button = KEY_DOWN
+config = Down
+repeat = 2
+end
+
+#       KEY_LEFT
+##      Left
+begin
+prog = mythtv
+button = KEY_LEFT
+config = Left
+repeat = 2
+end
+
+#       KEY_RIGHT
+##      Right
+begin
+prog = mythtv
+button = KEY_RIGHT
+config = Right
+repeat = 2
+end
+
+#       KEY_OK
+##      Select/enter/resolve
+begin
+prog = mythtv
+button = KEY_OK
+config = Return
+end
+
+#       KEY_EXIT
+##      Exit/go back/cancel
+begin
+prog = mythtv
+button = KEY_EXIT
+config = Esc
+end
+
+#       KEY_INFO
+##      Menu
+begin
+prog = mythtv
+button = KEY_INFO
+config = m
+end
+
+
+#       KEY_CHANNELUP
+##      Up
+begin
+prog = mythtv
+button = KEY_CHANNELUP
+config = Up
+end
+
+#       KEY_CHANNELDOWN
+##      Down
+begin
+prog = mythtv
+button = KEY_CHANNELDOWN
+config = Down
+end
+
+#       KEY_VOLUMEUP
+##      Volume Up
+begin
+prog = mythtv
+button = KEY_VOLUMEUP
+config = F11
+repeat = 2
+end
+
+#       KEY_VOLUMEDOWN
+##      Volume down
+begin
+prog = mythtv
+button = KEY_VOLUMEDOWN
+config = F10
+repeat = 2
+end
+
+#       KEY_MUTE
+##      Mute
+begin
+prog = mythtv
+button = KEY_MUTE
+config = F9
+end
+
+
+#       KEY_NUMERIC_1
+##      1
+begin
+prog = mythtv
+button = KEY_NUMERIC_1
+config = 1
+end
+
+#       KEY_NUMERIC_2
+##      2
+begin
+prog = mythtv
+button = KEY_NUMERIC_2
+config = 2
+end
+
+#       KEY_NUMERIC_3
+##      3
+begin
+prog = mythtv
+button = KEY_NUMERIC_3
+config = 3
+end
+
+#       KEY_NUMERIC_4
+##      4
+begin
+prog = mythtv
+button = KEY_NUMERIC_4
+config = 4
+end
+
+#       KEY_NUMERIC_5
+##      5
+begin
+prog = mythtv
+button = KEY_NUMERIC_5
+config = 5
+end
+
+#       KEY_NUMERIC_6
+##      6
+begin
+prog = mythtv
+button = KEY_NUMERIC_6
+config = 6
+end
+
+#       KEY_NUMERIC_7
+##      7
+begin
+prog = mythtv
+button = KEY_NUMERIC_7
+config = 7
+end
+
+#       KEY_NUMERIC_8
+##      8
+begin
+prog = mythtv
+button = KEY_NUMERIC_8
+config = 8
+end
+
+#       KEY_NUMERIC_9
+##      9
+begin
+prog = mythtv
+button = KEY_NUMERIC_9
+config = 9
+end
+
+#       KEY_NUMERIC_0
+##      0
+begin
+prog = mythtv
+button = KEY_NUMERIC_0
+config = 0
+end
+
+
+##       KEY_NUMERIC_POUND (#) - I know it's wierd
+###      Info
+begin
+prog = mythtv
+button = KEY_NUMERIC_POUND
+config = O
+end
+
+#       KEY_NUMERIC_STAR (*)
+##      Info
+begin
+prog = mythtv
+button = KEY_NUMERIC_STAR
+config = i
+end
+
+
+#       KEY_RED
+##      Red Button
+begin
+prog = mythtv
+button = KEY_RED
+config = F2
+end
+
+#       KEY_GREEN
+##      Green Button
+begin
+prog = mythtv
+button = KEY_GREEN
+config = F3
+end
+
+#       KEY_YELLOW
+##      Yellow Button
+begin
+prog = mythtv
+button = KEY_YELLOW
+config = F4
+end
+
+#       KEY_BLUE
+##      Blue Button
+begin
+prog = mythtv
+button = KEY_BLUE
+config = F5
+end
+
+
+#       KEY_PVR
+##      Change tuner card input
+begin
+prog = mythtv
+button = KEY_PVR
+config = c
+end
+

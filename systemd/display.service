@@ -1,0 +1,20 @@
+[Unit]
+Description=Display Window Manager
+Requires=tv.service
+After=tv.service
+
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/sleep 1
+ExecStart=/usr/bin/ratpoison
+EnvironmentFile=/etc/conf.d/tv
+Restart=on-failure
+RestartSec=2s
+User=mythtv
+Group=mythtv
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
