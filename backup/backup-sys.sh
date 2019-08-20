@@ -14,10 +14,10 @@ export STARTTIME=`/bin/date -u +"%s"`
 BAKSTORE="/home/data/backup/sys/"
 EXCLD="${BAKSTORE}/sys.xcld"
 BACKPRE="${HOSTN}"
-BAKBOOT="${BAKSTORE}/${BACKPRE}-boot_${BAKLABEL}_${DATESTAMP}.tgz"
-BAKROOT="${BAKSTORE}/${BACKPRE}-root_${BAKLABEL}_${DATESTAMP}.tgz"
-BAKHOME="${BAKSTORE}/${BACKPRE}-home_${BAKLABEL}_${DATESTAMP}.tgz"
-BAKVAR="${BAKSTORE}/${BACKPRE}-var_${BAKLABEL}_${DATESTAMP}.tgz"
+BAKBOOT="${BAKSTORE}/${BACKPRE}-boot_${BAKLABEL}_${DATESTAMP}.tar.gz"
+BAKROOT="${BAKSTORE}/${BACKPRE}-root_${BAKLABEL}_${DATESTAMP}.tar.gz"
+BAKHOME="${BAKSTORE}/${BACKPRE}-home_${BAKLABEL}_${DATESTAMP}.tar.gz"
+BAKVAR="${BAKSTORE}/${BACKPRE}-var_${BAKLABEL}_${DATESTAMP}.tar.gz"
 LOG="${BAKSTORE}/${BACKPRE}_${BAKLABEL}_${DATESTAMP}.log"
 
 EXITSTAT=0
@@ -107,10 +107,10 @@ Monthly arachives over		$MARCHAGE days old
 
 END
 
-for t in log tgz ; do
-/usr/bin/find ${BAKSTORE} -type f -mtime +${WARCHAGE} -name "${HOSTN}_full-sys_*.${t}" -exec rm -v {} \;
-/usr/bin/find ${BAKSTORE} -type f -mtime +${MARCHAGE} -name "${HOSTN}_MONTHLY_*.${t}" -exec rm -v {} \;
-done
+/usr/bin/find ${BAKSTORE} -type f -mtime +${WARCHAGE} -name "${HOSTN}_full-sys_*.tar.gz" -exec rm -v {} \;
+/usr/bin/find ${BAKSTORE} -type f -mtime +${WARCHAGE} -name "${HOSTN}_full-sys_*.log" -exec rm -v {} \;
+/usr/bin/find ${BAKSTORE} -type f -mtime +${MARCHAGE} -name "${HOSTN}_MONTHLY_*.tar.gz" -exec rm -v {} \;
+/usr/bin/find ${BAKSTORE} -type f -mtime +${MARCHAGE} -name "${HOSTN}_MONTHLY_*.log" -exec rm -v {} \;
 
 }
 
