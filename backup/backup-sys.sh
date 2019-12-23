@@ -107,9 +107,9 @@ Monthly arachives over		$MARCHAGE days old
 
 END
 
-/usr/bin/find ${BAKSTORE} -type f -mtime +${WARCHAGE} -name "${HOSTN}_full-sys_*.tar.gz" -exec rm -v {} \;
+/usr/bin/find ${BAKSTORE} -type f -mtime +${WARCHAGE} -name "${HOSTN}-*_full-sys_*.tar.gz" -exec rm -v {} \;
 /usr/bin/find ${BAKSTORE} -type f -mtime +${WARCHAGE} -name "${HOSTN}_full-sys_*.log" -exec rm -v {} \;
-/usr/bin/find ${BAKSTORE} -type f -mtime +${MARCHAGE} -name "${HOSTN}_MONTHLY_*.tar.gz" -exec rm -v {} \;
+/usr/bin/find ${BAKSTORE} -type f -mtime +${MARCHAGE} -name "${HOSTN}-*_MONTHLY_*.tar.gz" -exec rm -v {} \;
 /usr/bin/find ${BAKSTORE} -type f -mtime +${MARCHAGE} -name "${HOSTN}_MONTHLY_*.log" -exec rm -v {} \;
 
 }
