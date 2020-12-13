@@ -84,6 +84,13 @@ grub-mkconfig -o /boot/grub/grub.cfg && echo "...done  :-)" || echo "...failed g
 
 echo
 
+/bin/mount |grep -Eq " on \/boot " && MBOOT=yes
+
+if [ "$MBOOT" != "yes" ] ; then
+	echo "Mounting /boot"
+	/bin/mount /boot
+fi
+
 get_args $*
 copy_runtime
 make_kernel
@@ -91,6 +98,9 @@ grub
 
 echo
 
-
+if [ "$MBOOT" != "yes" ] ; then
+	echo "Unmounting /boot"
+	/bin/umount /boot
+fi
 
 exit 0
