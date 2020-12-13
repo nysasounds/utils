@@ -18,7 +18,6 @@ Usage Example:   $0 -m -i
 -i               : Build initrd only
 -m               : Invoke menuconfig
 -f config_file   : Use config_file for .config
--t               : No 3p modules rebuild
 "
 }
 
@@ -34,9 +33,6 @@ case $arg in
 	;;
 	f)
 	CONFIG="$OPTARG"
-	;;
-	t)
-	TP="NO"
 	;;
 	?)
 	usage
@@ -85,14 +81,6 @@ grub-mkconfig -o /boot/grub/grub.cfg && echo "...done  :-)" || echo "...failed g
 }
 
 
-if [ "$TP" != "NO" ] ; then
-3p_modules() {
-echo "Rebuilding third party modules..."
-emerge @module-rebuild && echo "Modules rebuilt...  :-)" || echo "Failed rebuilding third party modules...  :-("
-}
-fi
-
-
 
 echo
 
@@ -100,7 +88,6 @@ get_args $*
 copy_runtime
 make_kernel
 grub
-3p_modules
 
 echo
 
