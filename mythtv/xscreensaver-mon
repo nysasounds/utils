@@ -89,7 +89,7 @@ def get_status():
 
   #status = re.search('^XScreenSaver 5.36: screen (.*blanked) since (.*)( \(hack #([0-9]*)\))?$', raw_status)
   #status = re.search('^XScreenSaver 5.36: screen (.*blanked) since (\w+ \w+ \w+ \d+:\d+:\d+ \d+)( \(hack #([0-9]*)\))?$', raw_status)
-  status = re.search('^XScreenSaver [0-9]+.[0-9]+: screen (.*blanked) since (\w+\s+\w+\s+\w+\s+\d+:\d+:\d+\s+\d+)( \(hack #([0-9]*)\))?$', raw_status)
+  status = re.search('^XScreenSaver [0-9]+.[0-9]+: screen (.*[blanked|locked]) since (\w+\s+\w+\s+\w+\s+\d+:\d+:\d+\s+\d+)( \(hack #([0-9]*)\))?$', raw_status)
 
 
   if len(status.groups()) == 4:
@@ -120,7 +120,7 @@ def screensaver_conf(config):
     if config == 'pretty':
 
       preset = xscreesaver_config_view
-     
+
     if preset is None:
 
       log.warn('No matching preset[{}]'.format(config))
@@ -139,6 +139,13 @@ def screensaver_conf(config):
     if os.path.exists(xscreesaver_config):
 
       os.remove(xscreesaver_config)
+
+    # If this is a link still, then it must be invalid [ as the previous block checks if it exists ] #
+    # in this case remove it #
+    if os.path.islink(xscreesaver_config):
+
+      os.remove(xscreesaver_config)
+
 
     os.symlink(preset, xscreesaver_config)
     return True
@@ -178,7 +185,7 @@ def main():
 
 
         # If xscreensaver is active #
-        if status[0] == 'blanked':
+        if status[0] in ('blanked','locked'):
 
           # for over an hour #
           if status[1] > 3600:
