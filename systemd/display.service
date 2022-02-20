@@ -1,6 +1,6 @@
 [Unit]
 Description=Display
-After=graphical.target systemd-user-sessions.service
+After=systemd-user-sessions.service
 
 [Service]
 User=mythtv
