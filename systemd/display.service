@@ -1,20 +1,26 @@
 [Unit]
-Description=Display Window Manager
-Requires=tv.service
-After=tv.service
-
+Description=Display
+After=graphical.target systemd-user-sessions.service
 
 [Service]
-Type=simple
-ExecStartPre=/usr/bin/sleep 1
-ExecStart=/usr/bin/ratpoison
-EnvironmentFile=/etc/conf.d/tv
-Restart=on-failure
-RestartSec=2s
 User=mythtv
 Group=mythtv
+WorkingDirectory=~
+
+PAMName=login
+Environment=XDG_SESSION_TYPE=wayland
+TTYPath=/dev/tty2
+StandardInput=tty
+UnsetEnvironment=TERM
+
+UtmpIdentifier=tty2
+UtmpMode=user
+
 StandardOutput=journal
-StandardError=journal
+ExecStartPre=/usr/bin/chvt 2
+ExecStart=/usr/bin/sway
+Restart=on-failure
+RestartSec=1s
 
 [Install]
 WantedBy=multi-user.target

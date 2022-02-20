@@ -3,23 +3,30 @@ Description=Myth Frontend
 Requires=display.service
 Requires=systemd-networkd-wait-online.service
 Requires=lirc.service
-Wants=xscreensaver.service
+#Wants=xscreensaver.service
 After=display.service
 After=lirc.service
-After=xscreensaver.service
+#After=xscreensaver.service
 After=systemd-networkd-wait-online.service
 
 [Service]
 Type=simple
-ExecStartPre=/usr/bin/xrandr --output $MYTH_OUT --mode $MYTH_MODE --rate $MYTH_RATE
-ExecStart=/usr/bin/mythfrontend
-EnvironmentFile=/etc/conf.d/tv
-Restart=on-failure
-RestartSec=2s
+
 User=mythtv
 Group=mythtv
+PAMName=systemd-user
+Environment=WAYLAND_DISPLAY=wayland-1
+Environment=QT_QPA_PLATFORM=wayland
+Environment=XDG_CURRENT_DESKTOP=sway
+
+ExecStartPre=env
+ExecStart=/usr/bin/mythfrontend
+Restart=on-failure
+RestartSec=1s
+
 StandardOutput=journal
 StandardError=journal
+
 LimitNICE=0
 LimitRTPRIO=50
 
