@@ -20,6 +20,8 @@ User=mythtv
 Group=mythtv
 StandardOutput=journal
 StandardError=journal
+LimitNICE=0
+LimitRTPRIO=50
 
 [Install]
 WantedBy=multi-user.target
