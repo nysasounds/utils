@@ -8,12 +8,13 @@ Before=xscreensaver-monitor.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/xscreensaver -nosplash -no-capture-stderr -verbose
+ExecStart=/usr/bin/xscreensaver --nosplash --verbose
 EnvironmentFile=/etc/conf.d/tv
 Restart=on-failure
 RestartSec=2s
 User=mythtv
 Group=mythtv
+OOMScoreAdjust=-1000
 StandardOutput=journal
 StandardError=journal
 
