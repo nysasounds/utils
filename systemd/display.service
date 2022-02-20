@@ -1,6 +1,7 @@
 [Unit]
 Description=Display
 After=systemd-user-sessions.service
+After=multi-user.target
 
 [Service]
 User=mythtv
@@ -19,8 +20,8 @@ UtmpMode=user
 StandardOutput=journal
 ExecStartPre=/usr/bin/chvt 2
 ExecStart=/usr/bin/sway
-Restart=on-failure
-RestartSec=1s
+Restart=always
+RestartSec=3s
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target

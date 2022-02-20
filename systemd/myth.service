@@ -19,10 +19,9 @@ Environment=WAYLAND_DISPLAY=wayland-1
 Environment=QT_QPA_PLATFORM=wayland
 Environment=XDG_CURRENT_DESKTOP=sway
 
-ExecStartPre=env
 ExecStart=/usr/bin/mythfrontend
-Restart=on-failure
-RestartSec=1s
+Restart=always
+RestartSec=3s
 
 StandardOutput=journal
 StandardError=journal
@@ -31,4 +30,4 @@ LimitNICE=0
 LimitRTPRIO=50
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
