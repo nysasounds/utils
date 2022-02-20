@@ -69,7 +69,7 @@ def read_command(program):
 
   except subprocess.CalledProcessError as grepexc:
 
-    log.warn('Unalbe to read command: exit[{}] {}'.format(grepexc.returncode, grepexc.output.decode("utf-8").strip()))
+    log.warning('Unalbe to read command: exit[{}] {}'.format(grepexc.returncode, grepexc.output.decode("utf-8").strip()))
     return False
 
   line = output.decode("utf-8").strip()
@@ -123,7 +123,7 @@ def screensaver_conf(config):
 
     if preset is None:
 
-      log.warn('No matching preset[{}]'.format(config))
+      log.warning('No matching preset[{}]'.format(config))
       return False
 
 
@@ -212,7 +212,7 @@ def main():
 
       else:
 
-        log.warn('No status')
+        log.warning('No status')
 
 
     except (SystemExit, KeyboardInterrupt) as e:
